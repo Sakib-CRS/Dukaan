@@ -1,3 +1,5 @@
+using Dukaan.Application.Dtos;
+using Dukaan.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dukaan.Host.Controllers;
@@ -11,17 +13,19 @@ namespace Dukaan.Host.Controllers;
 /// </remarks>
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController(AuthService authService) : ControllerBase
 {
+
     /// <summary>
     /// Endpoint for login a new merchant and store.
     /// </summary>
     /// <param name="request">The login data</param>
     /// <returns>The login response.</returns>
     /// <response code="200">Returns the token informations.</response>
-    public async Task<ActionResult> Login()
+    [HttpPost("login")]
+    public async Task<ActionResult> Login(LoginRequestDTO request)
     {
-        // TODO: Get response from AuthService for login
-        return Ok();
+        var response = await authService.LoginAsync(request);
+        return Ok(response);
     }
 }
